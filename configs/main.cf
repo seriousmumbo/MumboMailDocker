@@ -1,0 +1,34 @@
+#Hostname
+
+#Domains
+
+#Relay
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_tls_security_level = encrypt
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+smtp_sasl_security_options = noanonymous
+
+mynetworks =
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+
+smtpd_tls_cert_file=/etc/ssl/certs/mailcert.pem
+smtpd_tls_key_file=/etc/ssl/private/mail.key
+smtpd_use_tls=yes
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+smtpd_tls_security_level=may
+smtpd_tls_protocols = !SSLv2, !SSLv3
+smtpd_tls_wrappermode=no
+smtpd_sasl_auth_enable=yes
+smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject_unauth_destination
+smtpd_sasl_type=dovecot
+smtpd_sasl_path=private/auth
+milter_macro_daemon_name=ORIGINATING
+
+local_recipient_maps =
+virtual_transport = lmtp:unix:private/dovecot-lmtp
+
